@@ -1,0 +1,49 @@
+body {
+  background: #1b1e2c;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.btn-google {
+  background-color: #db4437;
+  color: white;
+}
+
+.btn-facebook {
+  background-color: #3b5998;
+  color: white;
+}
+
+.btn-google:hover,
+.btn-facebook:hover {
+  opacity: 0.9;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.form-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
