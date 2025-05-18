@@ -1,11 +1,20 @@
 from django.shortcuts import render
 import requests
 # Create your views here.
+def home(request):
+    return render(request, 'movie/master.html')
+
 def list_movie(request):
     response = requests.get("http://127.0.0.1:8080/movies/movie")
-    move_list = response.json()
-    print(move_list)
-    return render(request, 'movie/master.html', {"move_list": move_list} )
+    movie_list = response.json()
+    print(movie_list)
+    return render(request, 'movie/list_movie.html', {"movie_list": movie_list} )
+
+def list_serials(request):
+    response = requests.get("http://127.0.0.1:8080/movies/serials")
+    serial_list = response.json()
+    print(serial_list)
+    return render(request, 'movie/list_serial.html', {"serial_list": serial_list})
 
 def carrousel(request):
     response = requests.get("http://127.0.0.1:8080/advertising/carrousel")

@@ -15,4 +15,4 @@ def create_user(request):
                 return HttpResponse("Ошибка при отправке", status=500)
     else:
         form = RegisterForm()
-    return render(request, 'user/register.html', {'form': form})
+    return render(request, 'user/registration.html', {'form': form})

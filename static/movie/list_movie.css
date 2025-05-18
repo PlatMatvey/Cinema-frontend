@@ -1,0 +1,61 @@
+/* Секция фильмов */
+.movie-section {
+  padding: 20px 0;
+}
+
+/* Заголовок (тот же) */
+.movie-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* Список карточек — переносим на новую строку */
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Карточка: занимаем ровно 1/4 ширины минус gap */
+.movie-card {
+  flex: 0 0 calc((100% - 3 * 16px) / 4);
+  max-width:    calc((100% - 3 * 16px) / 4);
+  background: #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Картинка подстраивается под ширину карточки */
+.movie-card img {
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  display: block;
+  object-fit: cover;
+}
+
+/* Остальные стили без изменений */
+.movie-title {
+  padding: 8px 10px 4px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #fff;
+}
+.movie-info {
+  padding: 0 10px 8px;
+  font-size: 12px;
+  color: #aaa;
+}
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #e63946;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
