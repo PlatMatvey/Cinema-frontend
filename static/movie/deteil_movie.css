@@ -1,0 +1,12 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+img {
+    max-height: 500px;
+    object-fit: cover;
+}
