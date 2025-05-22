@@ -30,3 +30,8 @@ def movie_detail(request, movie_id):
     response = requests.get(f"http://127.0.0.1:8080/movies/movie/{movie_id}")
     movie = response.json()
     return render(request, 'movie/deteil_movie.html', {'movie': movie})
+
+def all_movie(request):
+    response = requests.get("http://127.0.0.1:8080/movies/movie")
+    movie_all = response.json()
+    return render(request, 'movie/all_movie.html', {"movie_all": movie_all})
