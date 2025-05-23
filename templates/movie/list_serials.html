@@ -18,7 +18,9 @@
       {% for i in serial_list %}
         <div class="movie-card">
           <div class="badge"></div>
-          <img src="{{ i.img_big }}">
+           <a href="{% url 'serial_detail' i.id %}">
+              <img src="{{ i.img_big }}" alt="{{ i.title }}">
+           </a>
           <div class="movie-title">{{ i.title }}</div>
           <div class="movie-info">English | 22 AUG</div>
         </div>
