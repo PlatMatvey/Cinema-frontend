@@ -10,51 +10,42 @@
 </head>
 <body>
 {% include 'movie/header.html' %}
-<div class="container-fluid mt-4">
-  <div class="row">
+<form method="get">
+    <div class="p-3 border rounded-3 bg-dark-subtle shadow-sm" style="background-color: #1c1c1c; border-color: #333;">
+      <h5 class="mb-3 text-white">Фильтры</h5>
 
-    <aside class="col-md-2">
-  <div class="p-3 border rounded-3 bg-body-tertiary bg-dark-subtle shadow-sm" style="background-color: #1c1c1c; border-color: #333;">
-    <h5 class="mb-3 text-white">Фильтры</h5>
 
-    <div class="mb-3">
-      <strong class="text-white">Жанры</strong>
-      <div class="form-check mt-1">
-        <input class="form-check-input" type="checkbox" value="action" id="genre-action">
-        <label class="form-check-label text-white-50" for="genre-action">Боевик</label>
+      <div class="mb-3">
+        <strong class="text-white">Жанры</strong>
+        <div class="form-check mt-1">
+          <input class="form-check-input" type="checkbox" name="genre" value="action" id="genre-action"
+            {% if 'action' in selected_genres %}checked{% endif %}>
+          <label class="form-check-label text-white-50" for="genre-action">Боевик</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="genre" value="drama" id="genre-drama"
+            {% if 'drama' in selected_genres %}checked{% endif %}>
+          <label class="form-check-label text-white-50" for="genre-drama">Драма</label>
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="drama" id="genre-drama">
-        <label class="form-check-label text-white-50" for="genre-drama">Драма</label>
+
+      <div class="mb-3">
+        <strong class="text-white">Формат</strong>
+        <div class="form-check mt-1">
+          <input class="form-check-input" type="checkbox" name="format" value="4k" id="format-4k"
+            {% if '4k' in selected_formats %}checked{% endif %}>
+          <label class="form-check-label text-white-50" for="format-4k">4K</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="format" value="hd" id="format-hd"
+            {% if 'hd' in selected_formats %}checked{% endif %}>
+          <label class="form-check-label text-white-50" for="format-hd">HD</label>
+        </div>
       </div>
+
+      <button type="submit" class="btn btn-outline-light btn-sm w-100">Применить фильтры</button>
     </div>
-
-    <div class="mb-3">
-      <strong class="text-white">Язык</strong>
-      <div class="form-check mt-1">
-        <input class="form-check-input" type="checkbox" value="english" id="lang-eng">
-        <label class="form-check-label text-white-50" for="lang-eng">Английский</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="russian" id="lang-rus">
-        <label class="form-check-label text-white-50" for="lang-rus">Русский</label>
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <strong class="text-white">Формат</strong>
-      <div class="form-check mt-1">
-        <input class="form-check-input" type="checkbox" value="4k" id="format-4k">
-        <label class="form-check-label text-white-50" for="format-4k">4K</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="hd" id="format-hd">
-        <label class="form-check-label text-white-50" for="format-hd">HD</label>
-      </div>
-    </div>
-
-    <button class="btn btn-outline-light btn-sm w-100">Сбросить фильтры</button>
-  </div>
+  </form>
 </aside>
 
     <!-- 🔹 Правая колонка: фильмы -->
@@ -67,7 +58,7 @@
               <img src="{{ movie.img_big }}" class="card-img-top" alt="{{ movie.title }}">
               <div class="card-body p-2">
                 <h5 class="card-title">{{ movie.title }}</h5>
-                <p class="card-text">{{ movie.year }}</p>
+                <p class="card-text">{{ movie.language }} | {{ movie.year }}</p>
               </div>
             </div>
           </div>

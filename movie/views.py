@@ -39,4 +39,17 @@ def serial_detail(request, serial_id):
 def all_movie(request):
     response = requests.get("http://127.0.0.1:8080/movies/movie")
     movie_all = response.json()
-    return render(request, 'movie/all_movie.html', {"movie_all": movie_all})
+    selected_genre = request.GET.getlist('genre')
+    selected_format = request.GET.getlist('format')
+    def movie_filter(n):
+        if selected_genre and n.get('genre') not in selected_genre:
+            return False
+        if selected_format and n.get('format') not in selected_format:
+            return False
+        return True
+    filtered = [n for n in movie_all if movie_filter(n)]
+    return render(request, 'movie/all_movie.html', {
+        'movie_all': filtered,
+        'selected_genre': selected_genre,
+        'selected_format': selected_format,
+    })
