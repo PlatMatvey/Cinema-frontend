@@ -14,7 +14,7 @@
       <a href="{% url 'all_movie' %}" class="view-all">View All</a>
     </div>
     <div class="movie-list">
-      {% for i in movie_list %}
+      {% for i in movie_list|slice:":4" %}
         <div class="movie-card">
           <div class="badge"></div>
           <a href="{% url 'movie_detail' i.id %}">

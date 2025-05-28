@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies</title>
+  <link rel="stylesheet" href="{% static 'movie/all_movie.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+{% include 'movie/header.html' %}
+  <div class="col-md-2 px-4">
+      <form method="get" class="custom-filter-box">
+
+        <h5 class="mb-3">Фильтры</h5>
+
+        <div class="mb-3">
+          <strong>Жанры</strong>
+          <div class="filter-tags mt-2">
+            <input type="checkbox" class="btn-check" id="genre-action" autocomplete="off" name="genre" value="Боевик"
+              {% if 'action' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-action">Боевик</label>
+
+            <input type="checkbox" class="btn-check" id="genre-drama" autocomplete="off" name="genre" value="drama"
+              {% if 'drama' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-drama">Драма</label>
+
+            <input type="checkbox" class="btn-check" id="genre-horror" autocomplete="off" name="genre" value="horror"
+              {% if 'horror' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-horror">Ужасы</label>
+
+            <input type="checkbox" class="btn-check" id="genre-fantastic" autocomplete="off" name="genre" value="fantastic"
+              {% if 'fantastic' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-fantastic">Фантастика</label>
+
+            <input type="checkbox" class="btn-check" id="genre-comedy" autocomplete="off" name="genre" value="comedy"
+              {% if 'comedy' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-comedy">Комедия</label>
+
+            <input type="checkbox" class="btn-check" id="genre-documental" autocomplete="off" name="genre" value="documental"
+              {% if 'documental' in selected_genres %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="genre-documental">Документальный</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <strong>Формат</strong>
+          <div class="filter-tags mt-2">
+            <input type="checkbox" class="btn-check" id="format-4k" autocomplete="off" name="format" value="4K"
+              {% if '4k' in selected_formats %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="format-4k">4K</label>
+
+            <input type="checkbox" class="btn-check" id="format-hd" autocomplete="off" name="format" value="hd"
+              {% if 'hd' in selected_formats %}checked{% endif %}>
+            <label class="btn btn-sm filter-tag" for="format-hd">HD</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-apply w-100 mt-2">Применить</button>
+      </form>
+    </div>
+
+    <!-- 🔹 Правая колонка: фильмы -->
+    <main class="col-md-9">
+      <h2 class="section-title mb-4">Serials</h2>
+      <div class="row">
+        {% for serial in serial_all %}
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+            <div class="card movie-card h-100">
+              <a href="{% url 'serial_detail' serial.id %}">
+                <img src="{{ serial.img_big }}" alt="{{ serial.title }}">
+              </a>
+              <div class="card-body p-2">
+                <h5 class="card-title">{{ serial.title }}</h5>
+                <p class="card-text">{{ serial.language }} | {{ serial.year }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </main>
+
+  </div>
+</div>
+
+</body>
+</html>
