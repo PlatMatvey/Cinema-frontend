@@ -15,7 +15,7 @@
     </div>
 
     <div class="movie-list">
-      {% for i in serial_list %}
+      {% for i in serial_list|slice:":4" %}
         <div class="movie-card">
           <div class="badge"></div>
            <a href="{% url 'serial_detail' i.id %}">

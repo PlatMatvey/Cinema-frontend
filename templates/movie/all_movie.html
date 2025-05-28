@@ -90,7 +90,7 @@
     }
 
     .btn-apply {
-      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      background: linear-gradient(45deg, #85c283, #52b97a);
       border: none;
       color: white;
       padding: 0.8rem 1.5rem;
@@ -103,9 +103,8 @@
     }
 
     .btn-apply:hover {
-      background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+      background: linear-gradient(45deg, #85c283, #52b97a);
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
     }
 
     /* Content */
@@ -149,7 +148,7 @@
 
     .movie-card img {
       width: 100%;
-      height: 280px;
+      height: 350px;
       object-fit: cover;
       transition: transform 0.4s ease;
     }
@@ -159,7 +158,6 @@
     }
 
     .card-body {
-      padding: 1rem;
     }
 
     .card-title {
@@ -248,69 +246,22 @@
           </div>
         </div>
 
-        <div class="filter-section">
-          <strong>Жанры</strong>
-          <div class="filter-tags">
-            <input type="checkbox" class="btn-check" id="genre-action" autocomplete="off" name="genre" value="Боевик"
-              {% if 'action' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-action">боевик</label>
-
-            <input type="checkbox" class="btn-check" id="genre-war" autocomplete="off" name="genre" value="war"
-              {% if 'war' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-war">военный</label>
-
-            <input type="checkbox" class="btn-check" id="genre-detective" autocomplete="off" name="genre" value="detective"
-              {% if 'detective' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-detective">детектив</label>
-
-            <input type="checkbox" class="btn-check" id="genre-documentary" autocomplete="off" name="genre" value="documentary"
-              {% if 'documentary' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-documentary">документальный</label>
-
-            <input type="checkbox" class="btn-check" id="genre-drama" autocomplete="off" name="genre" value="drama"
-              {% if 'drama' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-drama">драма</label>
-
-            <input type="checkbox" class="btn-check" id="genre-history" autocomplete="off" name="genre" value="history"
-              {% if 'history' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-history">история</label>
-
-            <input type="checkbox" class="btn-check" id="genre-comedy" autocomplete="off" name="genre" value="comedy"
-              {% if 'comedy' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-comedy">комедия</label>
-
-            <input type="checkbox" class="btn-check" id="genre-crime" autocomplete="off" name="genre" value="crime"
-              {% if 'crime' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-crime">криминал</label>
-
-            <input type="checkbox" class="btn-check" id="genre-melodrama" autocomplete="off" name="genre" value="melodrama"
-              {% if 'melodrama' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-melodrama">мелодрама</label>
-
-            <input type="checkbox" class="btn-check" id="genre-cartoon" autocomplete="off" name="genre" value="cartoon"
-              {% if 'cartoon' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-cartoon">мультфильм</label>
-
-            <input type="checkbox" class="btn-check" id="genre-adventure" autocomplete="off" name="genre" value="adventure"
-              {% if 'adventure' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-adventure">приключения</label>
-
-            <input type="checkbox" class="btn-check" id="genre-family" autocomplete="off" name="genre" value="family"
-              {% if 'family' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-family">семейный</label>
-
-            <input type="checkbox" class="btn-check" id="genre-thriller" autocomplete="off" name="genre" value="thriller"
-              {% if 'thriller' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-thriller">триллер</label>
-
-            <input type="checkbox" class="btn-check" id="genre-horror" autocomplete="off" name="genre" value="horror"
-              {% if 'horror' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-horror">ужасы</label>
-
-            <input type="checkbox" class="btn-check" id="genre-fantastic" autocomplete="off" name="genre" value="fantastic"
-              {% if 'fantastic' in selected_genres %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="genre-fantastic">фантастика</label>
-          </div>
+          <div class="mb-3">
+          <strong class="text-white">Жанры</strong>
+          {% for genre in all_genres %}
+            <div class="form-check mt-1">
+              <input class="form-check-input"
+                     type="checkbox"
+                     name="genre"
+                     value="{{ genre }}"
+                     id="genre-{{ genre|slugify }}"
+                     {% if genre in selected_genres %}checked{% endif %}>
+              <label class="form-check-label text-white-50"
+                     for="genre-{{ genre|slugify }}">
+                {{ genre }}
+              </label>
+            </div>
+          {% endfor %}
         </div>
 
         <div class="filter-section">
@@ -333,14 +284,13 @@
     <!-- Основной контент -->
     <main class="content">
       <h2 class="section-title">Movies</h2>
-
       <div class="movies-grid">
         {% for movie in movie_all %}
           <div class="movie-card">
-            <a href="{% url 'movie_detail' movie.id %}">
-              <img src="{{ movie.img_big }}" alt="{{ movie.title }}">
-            </a>
             <div class="card-body">
+              <a href="{% url 'movie_detail' movie.id %}">
+                <img src="{{ movie.img_big }}" alt="{{ movie.title }}">
+              </a>
               <div class="card-title">{{ movie.title }}</div>
               <div class="card-text">{{ movie.language }} | {{ movie.year }}</div>
             </div>
