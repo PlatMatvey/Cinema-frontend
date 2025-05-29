@@ -8,8 +8,8 @@ def create_user(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            response = requests.post('Апишка', json=data)
-            if response.status_code == 200:
+            response = requests.post('http://127.0.0.1:8080/registration/registrations/', json=data)
+            if response.status_code == 201:
                 return HttpResponse("Успешно отправлено!")
             else:
                 return HttpResponse("Ошибка при отправке", status=500)
