@@ -11,7 +11,7 @@ body {
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  width: 100%;
+  width: 110%;
   max-width: 500px;
 }
 
@@ -21,11 +21,6 @@ body {
 
 .btn-google {
   background-color: #db4437;
-  color: white;
-}
-
-.btn-facebook {
-  background-color: #3b5998;
   color: white;
 }
 
