@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'movie/deteil_movie.css' %} ">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
 </head>
 <body>
 <!-- Header -->
@@ -58,13 +59,32 @@
 
         <!-- Videos -->
         <div class="tab-pane fade" id="videos">
-            {% for video in movie.videos %}
                 <div class="ratio ratio-16x9 mb-3">
-                    <iframe src="https://www.youtube.com/embed/{{ video.key }}" allowfullscreen></iframe>
+                <video id="player" controls width="640" height="360"></video>
+                   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+                   <script>
+                    document.addEventListener("DOMContentLoaded", function ()
+                    {
+                        var video = document.getElementById('player');
+                        var videoSrc = "{{ movie.hls_video }}";
+                        if (Hls.isSupported()) {
+                            var hls = new Hls();
+                            hls.loadSource(videoSrc);
+                            hls.attachMedia(video);
+                            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                                video.play();
+                            });
+                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            video.src = videoSrc;
+                            video.addEventListener('loadedmetadata', function () {
+                                video.play();
+                            });
+                        } else {
+                            alert("Ваш браузер не поддерживает HLS");
+                        }
+                    });
+                </script>
                 </div>
-            {% empty %}
-                <p>No videos available.</p>
-            {% endfor %}
         </div>
 
         <!-- Reviews -->

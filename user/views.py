@@ -38,17 +38,17 @@ def login_view(request):
     return render(request, 'user/login.html')
 
 
-# def dashboard_view(request):
-#     token = request.session.get('access_token')
-#     # Получаем токен
-#     if not token:
-#         return redirect('login')
-#     headers = {
-#         'Authorization': f'Bearer {token}'
-#     }
-#     response = requests.get('http://127.0.0.1:8000/api/some_protected/', headers=headers)
-#     if response.status_code == 200:
-#         data = response.json()
-#         return render(request, 'dashboard.html', {'data': data})
-#     else:
-#         return HttpResponse("Ошибка доступа", status=403)
+def dashboard_view(request):
+    token = request.session.get('access_token')
+    # Получаем токен
+    if not token:
+        return redirect('login')
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    response = requests.get('http://127.0.0.1:8000/api/some_protected/', headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        return render(request, 'dashboard.html', {'data': data})
+    else:
+        return HttpResponse("Ошибка доступа", status=403)

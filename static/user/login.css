@@ -1,6 +1,5 @@
 body {
-    background-color: #1b1e2c;
-    color: white;
+    background: #1b1e2c;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -17,7 +16,6 @@ body {
 .form-control {
     background-color: #0d1117;
     border: 1px solid #30363d;
-    color: white;
 }
 
 .form-control:focus {
