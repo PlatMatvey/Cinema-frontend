@@ -59,25 +59,36 @@
 
         <!-- Videos -->
         <div class="tab-pane fade" id="videos">
-            {% for video in movie.videos %}
                 <div class="ratio ratio-16x9 mb-3">
-                    <iframe src="https://www.youtube.com/embed/{{ video.key }}" allowfullscreen></iframe>
+                    <video id="player" controls width="640" height="360"></video>
+                   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+                   <script>
+                    document.addEventListener("DOMContentLoaded", function ()
+                    {
+                        var video = document.getElementById('player');
+                        var videoSrc = "{{ movie.hls_video }}";
+                        if (Hls.isSupported()) {
+                            var hls = new Hls();
+                            hls.loadSource(videoSrc);
+                            hls.attachMedia(video);
+                            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                                video.play();
+                            });
+                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            video.src = videoSrc;
+                            video.addEventListener('loadedmetadata', function () {
+                                video.play();
+                            });
+                        } else {
+                            alert("Ваш браузер не поддерживает HLS");
+                        }
+                    });
+                </script>
                 </div>
-            {% empty %}
-                <p>No videos available.</p>
-            {% endfor %}
         </div>
 
         <!-- Reviews -->
         <div class="tab-pane fade" id="reviews">
-            {% for review in movie.reviews %}
-                <blockquote class="blockquote mb-3">
-                    <p>{{ review.content }}</p>
-                    <footer class="blockquote-footer">{{ review.author }}</footer>
-                </blockquote>
-            {% empty %}
-                <p>No reviews yet.</p>
-            {% endfor %}
         </div>
     </div>
 </div>

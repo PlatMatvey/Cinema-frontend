@@ -4,10 +4,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .register-form {
-  background: #121212;
+  background: #1b1e2c;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -17,6 +18,8 @@ body {
 
 .form-control {
   margin-bottom: 15px;
+  background-color: #0d1117;
+  border: 1px solid #30363d;
 }
 
 .btn-google {
@@ -35,10 +38,15 @@ body {
 }
 
 .form-footer a {
-  color: #007bff;
+  color: #1b1e2c;
   text-decoration: none;
 }
 
 .form-footer a:hover {
   text-decoration: underline;
+}
+
+.form-text a {
+    color: #58a6ff;
+    text-decoration: none;
 }

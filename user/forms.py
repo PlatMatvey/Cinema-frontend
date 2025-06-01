@@ -6,3 +6,13 @@ class RegisterForm(forms.Form):
     last_name = forms.CharField(max_length=100)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.Textarea)
+
+class ReviewForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    text = forms.CharField(max_length=255)
+
+class RatingForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    rating = forms.IntegerField()

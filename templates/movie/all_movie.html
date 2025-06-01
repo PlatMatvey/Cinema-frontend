@@ -4,111 +4,49 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Movies</title>
+  <title>KinoHub - Все фильмы</title>
   <link rel="stylesheet" href="{% static 'movie/all_movie.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     body {
-      background: #121212;
-      color: #fff;
-      min-height: 100vh;
-      line-height: 1.6;
+      background-color: #121212;
     }
 
-    /* Sidebar */
-    .sidebar {
-      width: 280px;
-      height: 280px;
-      background: rgba(26, 26, 46, 0.8);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 1.5rem;
-      position: sticky;
-      top: 100px;
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
 
-    .filter-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
+    .filter-sidebar {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+    }
+
+    .filter-sidebar h5 {
       color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     .filter-section {
-      margin-bottom: 2rem;
+      margin-top: 20px;
     }
 
-    .filter-section-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: #4ecdc4;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .filter-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .filter-tag {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      user-select: none;
-      text-transform: lowercase;
-    }
-
-    .filter-tag:hover {
-      background: rgba(78, 205, 196, 0.2);
-      border-color: #4ecdc4;
-      transform: translateY(-2px);
-    }
-
-    .btn-check:checked + .filter-tag {
-      background: #4ecdc4;
-      border-color: #4ecdc4;
-      color: #fff;
-      box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
-    }
-
-    .btn-check {
-      display: none;
-    }
-
-    .btn-apply {
-      background: linear-gradient(45deg, #85c283, #52b97a);
-      border: none;
+    .btn-custom {
+      background-color: #1b1e2c;
       color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 50px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      font-size: 1rem;
-      width: 100%;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 15px;
+      transition: 0.3s ease;
     }
 
-    .btn-apply:hover {
-      background: linear-gradient(45deg, #85c283, #52b97a);
-      transform: translateY(-2px);
-    }
-
-    /* Content */
-    .content {
-      flex: 1;
+    .btn-custom:hover {
+      background-color: #2c3145;
     }
 
     .section-title {
@@ -123,8 +61,8 @@
 
     .movies-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(5, 1fr);
+
     }
 
     .movie-card {
@@ -135,7 +73,6 @@
       cursor: pointer;
       position: relative;
       height: 100%;
-      width: 95%;
       display: flex;
       flex-direction: column;
     }
@@ -157,148 +94,92 @@
       transform: scale(1.1);
     }
 
-    .card-body {
-    }
-
     .card-title {
       font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
       color: #ffffff;
-      line-height: 1.3;
+      text-align: center;
     }
 
     .card-text {
       color: rgba(255, 255, 255, 0.7);
       font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .card-text i {
-      color: #4ecdc4;
-    }
-
-    /* Loading Animation */
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.5;
-      }
-    }
-
-    .loading {
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .main-container {
-        flex-direction: column;
-        padding: 1rem;
-      }
-
-      .sidebar {
-        width: 100%;
-        position: static;
-      }
-
-      .search-bar {
-        min-width: 200px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 0 1rem;
-      }
-
-      .movies-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
-      }
-
-      .movie-card img {
-        height: 220px;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Основной контент -->
   <div class="main-container">
-    <!-- Боковая панель фильтров -->
-    <aside class="sidebar">
-      <form method="get" class="custom-filter-box">
-        <h5>Фильтры</h5>
-
-        <div class="filter-section">
-          <div class="filter-tags">
-          </div>
-        </div>
-
-          <div class="mb-3">
-          <strong class="text-white">Жанры</strong>
-          {% for genre in all_genres %}
-            <div class="form-check mt-1">
-              <input class="form-check-input"
-                     type="checkbox"
-                     name="genre"
-                     value="{{ genre }}"
-                     id="genre-{{ genre|slugify }}"
-                     {% if genre in selected_genres %}checked{% endif %}>
-              <label class="form-check-label text-white-50"
-                     for="genre-{{ genre|slugify }}">
-                {{ genre }}
-              </label>
+    <div class="row">
+      <!-- Слева фильтр -->
+      <div class="col-md-3 mb-4">
+        <div class="filter-sidebar">
+          <h5>Фильтр</h5>
+          <form method="get">
+            <div class="mb-3">
+              <strong>Жанры</strong>
+              {% for genre in all_genres %}
+              <div class="form-check mt-1">
+                <input class="form-check-input"
+                       type="checkbox"
+                       name="genre"
+                       value="{{ genre }}"
+                       id="genre-{{ genre|slugify }}"
+                       {% if genre in selected_genres %}checked{% endif %}>
+                <label class="form-check-label text-white-50"
+                       for="genre-{{ genre|slugify }}">
+                  {{ genre }}
+                </label>
+              </div>
+              {% endfor %}
             </div>
+
+            <div class="filter-section">
+              <strong>Формат</strong>
+              <div class="form-check mt-2">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="format-4k"
+                       name="format"
+                       value="4K"
+                       {% if '4k' in selected_formats %}checked{% endif %}>
+                <label class="form-check-label text-white-50" for="format-4k">4K</label>
+              </div>
+              <div class="form-check mt-2">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="format-hd"
+                       name="format"
+                       value="HD"
+                       {% if 'hd' in selected_formats %}checked{% endif %}>
+                <label class="form-check-label text-white-50" for="format-hd">HD</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-custom w-100 mt-3">Применить</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Справа фильмы -->
+      <div class="col-md-9">
+        <h1 class="section-title">Фильмы</h1>
+        <div class="movies-grid">
+          {% for movie in movie_all %}
+          <div class="movie-card">
+            <a href="{% url 'movie_detail' movie.id %}">
+              <img src="{{ movie.img_big }}" alt="{{ movie.title }}">
+            </a>
+            <div class="card-title">{{ movie.title }}</div>
+            <div class="card-text">Русский | {{ movie.year }}</div>
+          </div>
           {% endfor %}
         </div>
-
-        <div class="filter-section">
-          <strong>Формат</strong>
-          <div class="filter-tags">
-            <input type="checkbox" class="btn-check" id="format-4k" autocomplete="off" name="format" value="4K"
-              {% if '4k' in selected_formats %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="format-4k">4K</label>
-
-            <input type="checkbox" class="btn-check" id="format-hd" autocomplete="off" name="format" value="HD"
-              {% if 'hd' in selected_formats %}checked{% endif %}>
-            <label class="btn btn-sm filter-tag" for="format-hd">HD</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-apply w-100 mt-2">Применить фильтры</button>
-      </form>
-    </aside>
-
-    <!-- Основной контент -->
-    <main class="content">
-      <h2 class="section-title">Movies</h2>
-      <div class="movies-grid">
-        {% for movie in movie_all %}
-          <div class="movie-card">
-            <div class="card-body">
-              <a href="{% url 'movie_detail' movie.id %}">
-                <img src="{{ movie.img_big }}" alt="{{ movie.title }}">
-              </a>
-              <div class="card-title">{{ movie.title }}</div>
-              <div class="card-text">Русский | {{ movie.year }}</div>
-            </div>
-          </div>
-        {% endfor %}
       </div>
-    </main>
+    </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

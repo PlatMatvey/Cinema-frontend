@@ -10,8 +10,8 @@
 <body>
   <section class="movie-section">
     <div class="movie-header">
-      <h2>Movies</h2>
-      <a href="{% url 'all_movie' %}" class="view-all">View All</a>
+      <h2>Фильмы</h2>
+      <a href="{% url 'all_movie' %}" class="view-all">Смотреть Все</a>
     </div>
     <div class="movie-list">
       {% for i in movie_list|slice:":4" %}

@@ -1,5 +1,9 @@
 body {
     background: #1b1e2c;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: 'Segoe UI', sans-serif;
 }
 
