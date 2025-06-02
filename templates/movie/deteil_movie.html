@@ -360,6 +360,27 @@
                 display: block;
             }
         }
+
+        #popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        #popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -383,9 +404,47 @@
                             </div>
                             <p><strong>Режиссер:</strong> {{ movie.director }}</p>
                             <div class="action-buttons">
-                                <a href="#videos" class="btn-primary-custom" onclick="showTab('videos')">
-                                    <i class="bi bi-play-circle"></i> Смотреть Трейлер
-                                </a>
+                                <a href="" class="btn-primary-custom" onclick="showPopup()">
+        <i class="bi bi-play-circle"></i> Смотреть Трейлер
+    </a>
+
+    <div id="popup-overlay">
+        <div id="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">Трейлер фильма</h2>
+                <button class="close-btn" onclick="hidePopup()">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <!-- Видео трейлер -->
+                <div class="video-container">
+                    <video id="trailer-video"
+
+
+                           >
+                        <source src="{{ movie.trailer }}" type="video/mp4">
+
+                    </video>
+                </div>
+
+                <!-- Текст трейлера (если нужен) -->
+                <div class="popup-text">
+                    <p>{{ movie.trailer }}</p>
+                    <p>Наслаждайтесь просмотром официального трейлера!</p>
+                </div>
+
+                <!-- Дополнительные кнопки -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="hidePopup()">
+                        <i class="bi bi-x-circle"></i> Закрыть окно
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
                                 <a href="#" class="btn-primary-custom" style="background: rgba(255,255,255,0.2);">
                                     <i class="bi bi-plus-circle"></i> Добавить в Список
                                 </a>
@@ -467,8 +526,8 @@
                         <div class="video-container">
                             <div class="ratio ratio-16x9">
                                 <video id="player" controls width="640" height="360">
-                                    <source src="{{ movie.hls_video }}" type="application/x-mpegURL">
-                                    Ваш браузер не потдерживает просмотр данного фильма
+
+
                                 </video>
                             </div>
                         </div>
@@ -494,22 +553,87 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        // HLS Video Player
-        document.addEventListener("DOMContentLoaded", function () {
-            var video = document.getElementById('player');
-            var videoSrc = "{{ movie.hls_video }}";
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var video = document.getElementById('player');
+        var videoSrc = "{{ movie.hls_video }}";
 
-            if (videoSrc && video) {
-                if (Hls.isSupported()) {
-                    var hls = new Hls();
-                    hls.loadSource(videoSrc);
-                    hls.attachMedia(video);
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = videoSrc;
-                } else {
-                    console.log("HLS is not supported in this browser");
-                }
+        if (videoSrc && video) {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play().catch(function() {});
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+            } else {
+                console.log("HLS не поддерживается в этом браузере");
+            }
+        }
+    });
+
+    function showTab(tabId) {
+        var triggerEl = document.querySelector('#movieTabs button[data-bs-target="#' + tabId + '"]');
+        if (triggerEl) {
+            var tab = new bootstrap.Tab(triggerEl);
+            tab.show();
+        }
+    }
+</script>
+    <script>
+        const popupOverlay = document.getElementById("popup-overlay");
+        const popup = document.getElementById("popup");
+        const trailerVideo = document.getElementById("trailer-video");
+
+        // URL трейлера (замените на свой)
+        const TRAILER_URL = "{{ movie.trailer }}";
+
+        function showPopup() {
+            // Устанавливаем источник видео
+            trailerVideo.src = TRAILER_URL;
+
+            // Показываем overlay
+            popupOverlay.style.display = "block";
+
+            // Добавляем класс для анимации с небольшой задержкой
+            setTimeout(() => {
+                popupOverlay.classList.add("show");
+            }, 10);
+
+            // Блокируем прокрутку страницы
+            document.body.style.overflow = "hidden";
+        }
+
+        function hidePopup() {
+            // Убираем класс анимации
+            popupOverlay.classList.remove("show");
+
+            // Останавливаем видео
+            trailerVideo.src = "{{ movie.trailer }}";
+
+            // Скрываем overlay после анимации
+            setTimeout(() => {
+                popupOverlay.style.display = "none";
+            }, 300);
+
+            // Возвращаем прокрутку страницы
+            document.body.style.overflow = "auto";
+        }
+
+        // Закрытие по клику на overlay (исправлена ошибка в оригинале)
+        popupOverlay.addEventListener("click", hidePopup);
+
+        // Предотвращение закрытия при клике на popup
+        popup.addEventListener("click", (event) => {
+            event.stopPropagation();
+        });
+
+        // Закрытие по нажатию Escape
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape") {
+                hidePopup();
             }
         });
     </script>
