@@ -69,6 +69,9 @@ def add_review(request, movie_id):
 
     return render(request, 'user/review.html', {'form': form})
 
+
+
+
 def add_rating(request):
     if request.method == 'POST':
         form = RatingForm(request.POST)
@@ -83,3 +86,63 @@ def add_rating(request):
         form = RatingForm()
 
     return render(request, 'user/rating.html', {'form': form})
+
+
+# def all_users():
+#     response = requests.get('http://127.0.0.1:8080/registration/registrations/')
+#     if response.status_code == 200:
+#         data = response.json()
+#         users_set = set()
+#         for i in data:
+#             raw = i.get('user', '')
+#             for user in raw.split(','):
+#                 user = user.strip()
+#                 if user:
+#                     users_set.add(user)
+#         return sorted(users_set)
+#     return []
+#
+#
+# def create_chat(request):
+#     all_user = all_users()
+#
+#     selected_users = request.POST.getlist('user') if request.method == 'POST' else request.GET.getlist('user')
+#     filtered_users = [u for u in all_user if u in selected_users] if selected_users else all_users
+#
+#     if request.method == 'POST':
+#         form = ChatCreateForm(request.POST)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             data['selected_users'] = selected_users
+#
+#             response = requests.post('http://127.0.0.1:8080/message/chat/', json=data)
+#             if response.status_code == 201:
+#                 return HttpResponse("Чат успешно создан!")
+#             return HttpResponse("Ошибка при создании чата", status=500)
+#     else:
+#         form = ChatCreateForm()
+#
+#     return render(request, 'chat/create_chat.html', {
+#         'form': form,
+#         'all_user': all_user,
+#         'filtered_users': filtered_users,
+#         'selected_users': selected_users,
+#     })
+#
+# def send_message(request, chat_id):
+#     if request.method == 'POST':
+#         form = MessageForm(request.POST)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             data['chat_id'] = chat_id
+#             data['sender_id'] = request.user.id
+#
+#             response = requests.post('http://127.0.0.1:8080/message/message/', json=data)
+#             if response.status_code == 201:
+#                 return HttpResponse("Сообщение отправлено!")
+#             else:
+#                 return HttpResponse("Ошибка при отправке сообщения", status=500)
+#     else:
+#         form = MessageForm()
+#
+#     return render(request, 'chat/send_message.html', {'form': form, 'chat_id': chat_id})
