@@ -29,7 +29,7 @@ def list_serials(request):
 def movie_detail(request, movie_id):
     response = requests.get(f"http://127.0.0.1:8080/movies/movie/{movie_id}")
     movie = response.json()
-    return render(request, 'movie/deteil_movie.html', {'movie': movie})
+    return render(request, 'movie/deteil_movie.html', {'movie': movie, 'trailer_url': f"/api/movies/{movie_id}/?raw_trailer=true"})
 
 def serial_detail(request, serial_id):
     response = requests.get(f"http://127.0.0.1:8080/movies/serials/{serial_id}")
