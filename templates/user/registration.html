@@ -6,6 +6,71 @@
   <title>KinoHub. Регистрация</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'user/registration.css' %} ">
+  <style>
+      body {
+        background-color: #1b1e2c;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .register-form {
+        max-width: 500px;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #1f1f1f;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      }
+
+      .register-form h3 {
+        color: #ffffff;
+      }
+
+      .register-form .form-control {
+        margin-top: 15px;
+        background-color: #2c2c2c;
+        border: none;
+        color: #fff;
+      }
+
+      .register-form .form-control::placeholder {
+        color: #bbb;
+      }
+
+      .btn-primary {
+        margin-top: 20px;
+        background-color: #0d6efd;
+        border: none;
+      }
+
+      .btn-primary:hover {
+         background-color: #0d6efd;
+      }
+
+      .btn-google {
+        background-color: #db4437;
+        color: #fff;
+        border: none;
+      }
+
+      .btn-google:hover {
+        background-color: #c33d2f;
+      }
+
+      .form-footer {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .form-footer a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .form-footer a:hover {
+        text-decoration: underline;
+      }
+  </style>
 </head>
 <body>
   <form class="register-form" method="post">

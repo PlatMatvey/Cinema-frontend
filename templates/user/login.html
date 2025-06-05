@@ -4,26 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <title>KinoHub. Вход в аккаунт</title>
-    <link href="{% static 'user/login.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'user/login.css' %} ">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+    body {
+        background-color: #1b1e2c;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-container {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 40px;
+        background-color: #1f1f1f;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    .form-container h3 {
+        color: #ffffff;
+    }
+
+    .form-control {
+        background-color: #2c2c2c;
+        border: none;
+        color: #fff;
+    }
+
+    .form-control::placeholder {
+        color: #bbb;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+    }
+
+    .btn-danger {
+        background-color: #db4437;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c33d2f;
+    }
+
+    .form-text a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .form-text a:hover {
+        text-decoration: underline;
+    }
+    </style>
 </head>
 <body>
-    <div class="form-container text-center">
-        <h3 class="mb-4">Войдите в свой Аккаунт!</h3>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="username" name="username" class="form-control mb-3" placeholder="Никнейм" required>
-            <input type="password" name="password" class="form-control mb-3" placeholder="Пароль" required>
+<div class="form-container text-center">
+    <h3 class="mb-4">Войдите в свой Аккаунт!</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="username" name="username" class="form-control mb-3" placeholder="Никнейм" required>
+        <input type="password" name="password" class="form-control mb-3" placeholder="Пароль" required>
+<hr>
+        <button type="submit" class="btn btn-primary w-100 mb-3">Войти</button>
 
-            <button type="submit" class="btn btn-primary w-100 mb-3">Войти</button>
+        <button type="button" class="btn btn-danger w-100 mb-2">Войти при помощи Google</button>
 
-            <button type="button" class="btn btn-danger w-100 mb-2">Войти при помощи Google</button>
-
-            <div class="form-text">
-                <a href="#">Забыли пароль?</a><br>
-                <span>Увас нет аккаунта <a href="{% url 'registration' %}">Регистрация</a></span>
-            </div>
-        </form>
-    </div>
+        <div class="form-text">
+            <a href="{% url 'registration' %}">Увас нет аккаунта? Регистрация</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>
