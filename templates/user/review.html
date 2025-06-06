@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'review/review.css'%}">
+    <link rel="stylesheet" href="{% static 'user/review.css'%}">
     <title>Title</title>
 </head>
 <body>
-    <form method="post" action="{% url 'review_serial' serial.id %}" class="p-4 bg-white shadow rounded mt-4">
+    <form method="post" action="{% url 'add_review' movie.id %}" class="p-4 bg-white shadow rounded mt-4">
       {% csrf_token %}
       <h4 class="mb-3">Оставьте комментарий</h4>
 

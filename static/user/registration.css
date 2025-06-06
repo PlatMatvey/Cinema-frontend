@@ -1,0 +1,52 @@
+body {
+  background: #1b1e2c;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.register-form {
+  background: #1b1e2c;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 110%;
+  max-width: 500px;
+}
+
+.form-control {
+  margin-bottom: 15px;
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+}
+
+.btn-google {
+  background-color: #db4437;
+  color: white;
+}
+
+.btn-google:hover,
+.btn-facebook:hover {
+  opacity: 0.9;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.form-footer a {
+  color: #1b1e2c;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+.form-text a {
+    color: #58a6ff;
+    text-decoration: none;
+}
