@@ -14,14 +14,5 @@ class ReviewForm(forms.Form):
 
 class RatingForm(forms.Form):
     name = forms.CharField(max_length=100)
-    email = forms.EmailField()
+    email = forms.EmailField(required=False)
     rating = forms.IntegerField()
-
-# class ChatCreateForm(forms.Form):
-#     participants = forms.ModelMultipleChoiceField(
-#         queryset=User.objects.all(),
-#         widget=forms.CheckboxSelectMultiple
-#     )
-#
-# class MessageForm(forms.Form):
-#     content = forms.TextInput()

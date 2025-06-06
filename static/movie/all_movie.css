@@ -1,134 +1,64 @@
-/* Общие настройки */
 body {
-  background-color: #121212;
-  color: #fff;
-  margin: 0;
-}
+      background-color: #121212;
+    }
 
-/* Основной контейнер */
-.main-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  display: flex;
-  gap: 1.5rem;
-}
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
 
-/* Боковая панель фильтров - уменьшена */
-.sidebar {
-  width: 260px;
-  background-color: #161b22; /* чуть темнее, ближе к GitHub Dark */
-  color: #c9d1d9; /* мягкий белый */
-  box-shadow: 0 0 10px rgba(0,0,0,0.5); /* лёгкая тень */
-  border-radius: 10px;
-  padding: 1rem;
-  height: fit-content;
-  position: sticky;
-  top: 2rem;
+    .filter-sidebar {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+    }
 
-}
+    .filter-sidebar h5 {
+      color: #ffffff;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
 
-.custom-filter-box h5 {
-  font-weight: 700;
-  font-size: 1.1rem; /* Уменьшено с 1.3rem */
-  margin-bottom: 1.2rem; /* Уменьшено с 1.5rem */
-  color: #79c0ff;
-  border-color: #30363d;
-  padding-bottom: 0.5rem;
-}
+    .filter-section {
+      margin-top: 20px;
+    }
 
-.filter-section {
-  margin-bottom: 1.5rem; /* Уменьшено с 2rem */
-}
+    .btn-custom {
+      background-color: #1b1e2c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 15px;
+      transition: 0.3s ease;
+    }
 
-.filter-section strong {
-  display: block;
-  margin-bottom: 0.8rem; /* Уменьшено с 1rem */
-  font-size: 0.9rem; /* Уменьшено с 1rem */
-}
+    .btn-custom:hover {
+      background-color: #2c3145;
+    }
 
-.filter-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem; /* Уменьшено с 0.5rem */
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      background: linear-gradient(45deg, #ffffff, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-}
+    .content {
+      flex: 1;
+    }
 
-.btn-check {
-  position: absolute;
-  clip: rect(0,0,0,0);
-  pointer-events: none;
-}
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
 
-.filter-tag {
-  background-color: #2a2f36;
-  color: #c9d1d9;
-  border-radius: 12px;
-  padding: 5px 10px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  font-weight: 500;
-}
-
-.btn-check:checked + .filter-tag {
-  background-color: #2381f7;
-  color: white;
-  border-color: #58a6ff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.filter-tag:hover {
-  background-color: #347dff;
-  color: #fff;
-  border-color: #58a6ff;
-  transform: translateY(-2px);
-}
-
-.btn-apply {
-  background: linear-gradient(145deg, #30363d, #1f2329);
-  color: #fff;
-  font-weight: 600;
-  padding: 10px 0;
-  border: 1px solid #444c56;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  width: 100%;
-  font-size: 0.9rem;
-}
-
-.btn-apply:hover {
-  background: #2c70e0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
-}
-
-/* Основной контент */
-.content {
-  flex: 2;
-}
-
-.section-title {
-  font-weight: 700;
-  color: #58a6ff;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  margin-top: 0.3rem; /* или столько же, сколько .sidebar имеет top */
-}
-
-/* Сетка фильмов - 5 в строке */
-.movies-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Точно 5 колонок */
-  gap: 1.2rem; /* Уменьшено с 1.5rem для лучшего размещения */
-}
-
-/* Карточка фильма */
-.movie-card {
+    .movie-card {
       background-color: #1b1e2c;
       border-radius: 12px;
       overflow: hidden;
@@ -140,130 +70,36 @@ body {
       flex-direction: column;
     }
 
-.movie-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
+    .movie-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(78, 205, 196, 0.5);
+    }
 
-.movie-card:hover::before {
-  opacity: 1;
-}
+    .movie-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
 
-.movie-card:hover {
-  transform: translateY(-8px) scale(1.02);
-}
+    .movie-card:hover img {
+      transform: scale(1.1);
+    }
 
-.movie-card a {
-  text-decoration: none;
-  color: inherit;
-}
+    .card-body {
+    }
 
-.movie-card img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      color: #ffffff;
+      text-align: center;
+    }
 
-}
-
-.movie-card:hover img {
-  transform: scale(1.05);
-}
-
-.card-body {
-  padding: 0.8rem;
-  position: relative;
-  z-index: 2;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.card-title {
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: #58a6ff;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.card-text {
-  font-size: 0.875rem;
-  color: #8b949e;
-  margin: 0;
-}
-
-.movie-rating {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  z-index: 3;
-}
-
-/* Адаптивность */
-@media (max-width: 1400px) {
-  .movies-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 фильма на средних экранах */
-  }
-}
-
-@media (max-width: 1024px) {
-  .main-container {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .sidebar {
-    width: 100%;
-    position: static;
-  }
-
-  .movies-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 фильма */
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-tabs {
-    margin-left: 0;
-    margin-top: 1rem;
-  }
-
-  .movies-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 фильма на мобильных */
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .main-container {
-    padding: 1rem;
-  }
-
-  .filter-section {
-    margin-bottom: 1rem; /* Уменьшено с 1.5rem */
-  }
-}
-
-@media (max-width: 480px) {
-  .movies-grid {
-    grid-template-columns: repeat(1, 1fr); /* 1 фильм на очень маленьких экранах */
-  }
-}
+    .card-text {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      text-align: center;
+    }
