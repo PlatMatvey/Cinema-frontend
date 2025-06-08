@@ -65,53 +65,50 @@
 
     .movies-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
     }
 
     .movie-card {
-      background-color: #1b1e2c;
       border-radius: 12px;
       overflow: hidden;
-      transition: all 0.4s ease;
-      cursor: pointer;
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+      background-color: #111827;
+      transition: transform 0.3s ease;
+    }
+
+    .movie-card a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .movie-card a:hover {
+        color: #cccccc;
     }
 
     .movie-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      border-color: rgba(78, 205, 196, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     }
 
     .movie-card img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
-      transition: transform 0.4s ease;
+      display: block;
     }
 
-    .movie-card:hover img {
-      transform: scale(1.1);
+    .movie-info {
+      padding: 10px;
     }
 
-    .card-body {
-    }
-
-    .card-title {
-      font-size: 1.1rem;
+    .movie-info h5 {
+      font-size: 14px;
       font-weight: 600;
-      margin-top: 0.5rem;
-      color: #ffffff;
-      text-align: center;
     }
 
-    .card-text {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.9rem;
-      text-align: center;
+    .movie-info p {
+      margin: 4px 0 0;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -167,22 +164,21 @@
           </form>
         </div>
       </div>
-
      <main class="content">
       <h2 class="section-title">Сериалы</h2>
-
-      <div class="movies-grid">
-        {% for serial in serial_all %}
-          <div class="movie-card">
-            <div class="card-body">
-              <a href="{% url 'serial_detail' serial.id %}">
-                <img src="{{ serial.img_big }}" alt="{{ serial.title }}">
-              </a>
-              <div class="card-title">{{ serial.title }}</div>
-              <div class="card-text">{{ serial.language }} | {{ serial.year }}</div>
+            <div class="movies-grid">
+                {% for serial in serial_all %}
+                <div class="movie-card">
+                    <a href="{% url 'serial_detail' serial.id %}">
+                        <img src="{{ serial.img_big }}" alt="{{ serial.title }}">
+                        <div class="movie-info">
+                            <h5>{{ serial.title }}</h5>
+                            <p>Русский | {{ serial.year }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
             </div>
-          </div>
-        {% endfor %}
       </div>
     </main>
   </div>
