@@ -91,3 +91,6 @@ def all_serials(request):
         'selected_genres': selected_genres,
         'selected_formats': selected_formats,
     })
+
+def about(request):
+    return render(request, 'movie/about.html')

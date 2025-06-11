@@ -144,3 +144,17 @@ def rating_serial(request, serial_id):
         form = RatingForm()
 
     return render(request, 'mark/rating_serial.html', {'form': form})
+
+def user_profile(request, user_id):
+    response = requests.get(f"http://127.0.0.1:8080/registration/profile/{user_id}")
+    user = response.json()
+
+    favorites_response = requests.get(f"http://127.0.0.1:8080/registration/{user_id}/liked_movie")
+    favorites = favorites_response.json()
+
+    context = {
+        'user': user,
+        'favorites': favorites
+    }
+
+    return render(request, 'user/profile.html', context)
