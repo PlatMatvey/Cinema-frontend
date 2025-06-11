@@ -359,6 +359,52 @@
             }
         }
 
+                /* Popup - в темном стиле */
+        #popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            z-index: 1050;
+        }
+
+        #popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .popup-title {
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+        }
+
         /* Mobile menu toggle */
         .mobile-menu-toggle {
             display: none;
@@ -381,155 +427,241 @@
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-            <!-- Serial Header -->
-            <section class="serial-header">
-                <div class="serial-content">
-                    <div class="serial-info-container">
-                        <div class="serial-poster-container">
-                            <img src="{{ serial.img_big }}" alt="{{ serial.title }}" class="serial-poster">
-                        </div>
-                        <div class="serial-details">
-                            <h1>{{ serial.title }} <small class="text-muted">({{ serial.year }})</small></h1>
-                            <div class="serial-meta">
-                                <span class="genre-badge">{{ serial.genre }}</span>
-                                {% if serial.budget %}
-                                <div class="budget-info">
-                                    <i class="bi bi-currency-dollar"></i> Бюджет: ${{ serial.budget }}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <p><strong>Режиссер:</strong> {{ serial.director }}</p>
-                            <div class="action-buttons">
-                                <a href="#videos" class="btn-primary-custom" onclick="showTab('videos')">
-                                    <i class="bi bi-play-circle"></i> Смотреть Трейлер
-                                </a>
-                                <a href="#" class="btn-primary-custom" style="background: rgba(255,255,255,0.2);">
-                                    <i class="bi bi-plus-circle"></i> Добавить в Понравившиеся
-                                </a>
-                            </div>
-                            <div class="social-links">
-                                <a href="https://www.facebook.com" target="blank" class="facebook" title="Share on Facebook">
-                                    <i class="bi bi-facebook"></i>
-                                </a>
-                                <a href="https://www.twitter.com" target="blank" class="twitter" title="Share on Twitter">
-                                    <i class="bi bi-twitter"></i>
-                                </a>
-                                <a href="https://www.youtube.com" target="blank" class="youtube" title="Watch on YouTube">
-                                    <i class="bi bi-youtube"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+<div class="container-fluid">
+    <!-- Serial Header -->
+    <section class="serial-header">
+        <div class="serial-content">
+            <div class="serial-info-container">
+                <div class="serial-poster-container">
+                    <img src="{{ serial.img_big }}" alt="{{ serial.title }}" class="serial-poster">
                 </div>
-            </section>
-
-            <!-- Tabs -->
-            <div class="tabs-container">
-                <ul class="nav nav-tabs" id="serialTabs" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#summary" type="button">Общ. Информация</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#videos" type="button">Сериал</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cast" type="button">Рейтинг</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Оценки</button>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <!-- Summary -->
-                    <div class="tab-pane fade show active" id="summary">
-                        <div class="summary-content">
-                            <h3>Описание Сериала</h3>
-                            <p>{{ serial.description }}</p>
-
-                            <div class="movie-info-grid">
-                                <div class="info-card">
-                                    <h5><i class="bi bi-person-circle"></i> Режиссер</h5>
-                                    <p>{{ serial.director }}</p>
-                                </div>
-                                <div class="info-card">
-                                    <h5><i class="bi bi-calendar3"></i> Дата Релиза</h5>
-                                    <p>{{ serial.year }}</p>
-                                </div>
-                                <div class="info-card">
-                                    <h5><i class="bi bi-person-circle"></i> Актеры</h5>
-                                    <p>{{ serial.cast }}</p>
-                                </div>
-                                {% if serial.budget %}
-                                <div class="info-card">
-                                    <h5><i class="bi bi-currency-dollar"></i> Бюджет</h5>
-                                    <p>${{ serial.budget }}</p>
-                                </div>
-                                {% endif %}
-                            </div>
+                <div class="serial-details">
+                    <h1>{{ serial.title }} <small class="text-muted">({{ serial.year }})</small></h1>
+                    <div class="serial-meta">
+                        <span class="genre-badge">{{ serial.genre }}</span>
+                        {% if serial.budget %}
+                        <div class="budget-info">
+                            <i class="bi bi-currency-dollar"></i> Бюджет: ${{ serial.budget }}
                         </div>
-                    </div>
-
-                    <!-- Rating -->
-                    <div class="tab-pane fade" id="cast">
-                        <h3 style="color: #ffffff; margin-bottom: 30px;">Рейтинги пользователей</h3>
-                        <div class="reviews-container">
-                            {% include 'mark/rating_serial.html' %}
-                        </div>
-                    </div>
-
-                    <!-- Videos -->
-                    <div class="tab-pane fade" id="videos">
-                        {% if series.hls_video %}
-                        <div class="video-container">
-                            <div class="ratio ratio-16x9">
-                                <video id="player" controls width="640" height="360">
-                                    <source src="{{ series.hls_video }}" type="application/x-mpegURL">
-                                    Ваш браузер не потдерживает просмотр данного фильма
-                                </video>
-                            </div>
-                        </div>
-                        {% else %}
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle"></i> Video not available at the moment.
-                            </div>
                         {% endif %}
                     </div>
+                    <p><strong>Режиссер:</strong> {{ serial.director }}</p>
+                    <div class="action-buttons">
+                        <button class="btn-primary-custom" onclick="showPopup()">
+                            <i class="bi bi-play-circle"></i> Смотреть Трейлер
+                        </button>
+                        <a href="#" class="btn-primary-custom" style="background: rgba(255,255,255,0.2);">
+                            <i class="bi bi-plus-circle"></i> Добавить в Понравившиеся
+                        </a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com" target="blank" class="facebook" title="Share on Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="https://www.twitter.com" target="blank" class="twitter" title="Share on Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="https://www.youtube.com" target="blank" class="youtube" title="Watch on YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
 
-                    <!-- Reviews -->
-                    <div class="tab-pane fade" id="reviews">
-                        <h3 style="color: #ffffff; margin-bottom: 30px;">Оценки Пользователей</h3>
-                        <div class="reviews-container">
-                            {% include 'mark/review_serial.html' %}
+                    <!-- Popup для трейлера -->
+                    <div id="popup-overlay">
+                        <div id="popup">
+                            <div class="popup-header">
+                                <h2 class="popup-title">Трейлер</h2>
+                                <button class="close-btn" onclick="hidePopup()">&times;</button>
+                            </div>
+                            <div class="video-container">
+                                <video
+                                        id="trailer-video"
+                                        controls
+                                        crossorigin
+                                        playsinline
+                                        style="width: 100%; height: auto; border-radius: 8px;"
+                                >
+                                    <source src="{{ trailer_url }}" type="video/mp4">
+                                    Ваш браузер не поддерживает этот формат видео.
+                                </video>
+                            </div>
+                            <div class="mt-3 text-end">
+                                <button class="btn btn-secondary" onclick="hidePopup()"
+                                        style="border: none;">Закрыть
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs-container">
+        <ul class="nav nav-tabs" id="serialTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#summary" type="button">Общ.
+                    Информация
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#videos" type="button">Сериал</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cast" type="button">Рейтинг</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Оценки</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Summary -->
+            <div class="tab-pane fade show active" id="summary">
+                <div class="summary-content">
+                    <h3>Описание Сериала</h3>
+                    <p>{{ serial.description }}</p>
+
+                    <div class="movie-info-grid">
+                        <div class="info-card">
+                            <h5><i class="bi bi-person-circle"></i> Режиссер</h5>
+                            <p>{{ serial.director }}</p>
+                        </div>
+                        <div class="info-card">
+                            <h5><i class="bi bi-calendar3"></i> Дата Релиза</h5>
+                            <p>{{ serial.year }}</p>
+                        </div>
+                        <div class="info-card">
+                            <h5><i class="bi bi-person-circle"></i> Актеры</h5>
+                            <p>{{ serial.cast }}</p>
+                        </div>
+                        {% if serial.budget %}
+                        <div class="info-card">
+                            <h5><i class="bi bi-currency-dollar"></i> Бюджет</h5>
+                            <p>${{ serial.budget }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="tab-pane fade" id="cast">
+                <h3 style="color: #ffffff; margin-bottom: 30px;">Рейтинги пользователей</h3>
+                <div class="reviews-container">
+                    {% include 'mark/rating_serial.html' %}
+                </div>
+            </div>
+
+            <!-- Videos -->
+            <div class="tab-pane fade" id="videos">
+                {% if series.hls_video %}
+                <div class="video-container">
+                    <div class="ratio ratio-16x9">
+                        <video id="player" controls width="640" height="360">
+                            <source src="{{ series.hls_video }}" type="application/x-mpegURL">
+                            Ваш браузер не потдерживает просмотр данного фильма
+                        </video>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Video not available at the moment.
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Reviews -->
+            <div class="tab-pane fade" id="reviews">
+                <h3 style="color: #ffffff; margin-bottom: 30px;">Оценки Пользователей</h3>
+                <div class="reviews-container">
+                    {% include 'mark/review_serial.html' %}
+                </div>
+            </div>
+        </div>
     </div>
+    </main>
+</div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        // HLS Video Player
-        document.addEventListener("DOMContentLoaded", function () {
-            var video = document.getElementById('player');
-            var videoSrc = "{{ series.hls_video }}";
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    // HLS Video Player
+    document.addEventListener("DOMContentLoaded", function () {
+        var video = document.getElementById('player');
+        var videoSrc = "{{ series.hls_video }}";
 
-            if (videoSrc && video) {
-                if (Hls.isSupported()) {
-                    var hls = new Hls();
-                    hls.loadSource(videoSrc);
-                    hls.attachMedia(video);
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = videoSrc;
-                } else {
-                    console.log("HLS is not supported in this browser");
-                }
+        if (videoSrc && video) {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+            } else {
+                console.log("HLS is not supported in this browser");
             }
+        }
+    });
+
+    // Popup трейлера
+    const popupOverlay = document.getElementById("popup-overlay");
+    const trailerVideo = document.getElementById("trailer-video");
+
+    window.showPopup = function() {
+        popupOverlay.style.display = "block";
+        document.body.style.overflow = "hidden";
+        trailerVideo.load();
+        trailerVideo.play().catch(() => {});
+    };
+
+    window.hidePopup = function() {
+        trailerVideo.pause();
+        trailerVideo.currentTime = 0;
+        popupOverlay.style.display = "none";
+        document.body.style.overflow = "auto";
+    };
+
+    popupOverlay.addEventListener("click", (e) => {
+        if (e.target === popupOverlay) {
+            hidePopup();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            hidePopup();
+        }
+    });
+
+    // Анимация для кнопок
+    document.querySelectorAll('.btn-primary-custom, .btn-secondary-custom').forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            btn.style.transform = 'translateY(-2px)';
         });
-    </script>
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Smooth tab transitions
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Добавляем небольшую задержку для плавности
+            setTimeout(() => {
+                const activePane = document.querySelector('.tab-pane.show.active');
+                if (activePane) {
+                    activePane.style.opacity = '0';
+                    setTimeout(() => {
+                        activePane.style.opacity = '1';
+                    }, 100);
+                }
+            }, 50);
+        });
+    });
+</script>
 </body>
 </html>
