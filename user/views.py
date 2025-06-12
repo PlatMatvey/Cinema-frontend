@@ -1,7 +1,10 @@
 import requests
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, ReviewForm, RatingForm
+from .forms import RegisterForm, ReviewForm, RatingForm, CreateChatForm
+
 
 # Create your views here.
 def create_user(request):
@@ -35,6 +38,7 @@ def login_view(request):
         return HttpResponse("Неверный логин или пароль", status=401)
     return render(request, 'user/login.html')
 
+@login_required
 def review_movie(request, movie_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -64,6 +68,7 @@ def review_movie(request, movie_id):
 
     return render(request, 'mark/review_movie.html', {'form': form})
 
+@login_required
 def rating_movie(request, movie_id):
     if request.method == 'POST':
         form = RatingForm(request.POST)
@@ -90,6 +95,7 @@ def rating_movie(request, movie_id):
 
     return render(request, 'mark/rating_movie.html', {'form': form})
 
+@login_required
 def review_serial(request, serial_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -119,6 +125,7 @@ def review_serial(request, serial_id):
 
     return render(request, 'mark/review_serial.html', {'form': form})
 
+@login_required
 def rating_serial(request, serial_id):
     if request.method == 'POST':
         form = RatingForm(request.POST)
@@ -145,16 +152,21 @@ def rating_serial(request, serial_id):
 
     return render(request, 'mark/rating_serial.html', {'form': form})
 
-def user_profile(request, user_id):
-    response = requests.get(f"http://127.0.0.1:8080/registration/profile/{user_id}")
-    user = response.json()
-
-    favorites_response = requests.get(f"http://127.0.0.1:8080/registration/{user_id}/liked_movie")
-    favorites = favorites_response.json()
-
-    context = {
-        'user': user,
-        'favorites': favorites
-    }
-
-    return render(request, 'user/profile.html', context)
+def create_chat(request):
+    if request.method == 'POST':
+        form = CreateChatForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            response = requests.post('http://127.0.0.1:8080/message/chat/', json=data)
+            if response.status_code == 201:
+                return HttpResponse("Успешно создано!")
+            else:
+                return HttpResponse(f"Ошибка API: {response.status_code}", status=500)
+    else:
+        form = CreateChatForm()
+        all_users = requests.get('http://127.0.0.1:8080/registration/registrations/')
+        users = all_users.json()
+    return render(request, 'chat/create_chat.html', {
+        'form': form,
+        'users': users,
+    })
