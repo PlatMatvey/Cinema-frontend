@@ -166,7 +166,9 @@ def create_chat(request):
         form = CreateChatForm()
         all_users = requests.get('http://127.0.0.1:8080/registration/registrations/')
         users = all_users.json()
-    return render(request, 'chat/create_chat.html', {
-        'form': form,
-        'users': users,
-    })
+        print(users)
+
+        return render(request, 'chat/create_chat.html', {
+            'form': form,
+            'users': users,
+        })
