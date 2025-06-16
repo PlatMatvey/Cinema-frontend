@@ -19,9 +19,23 @@ class RatingForm(forms.Form):
     email = forms.EmailField(required=False)
     rating = forms.IntegerField()
 
+
 class CreateChatForm(forms.Form):
-    users = forms.ModelMultipleChoiceField(
-        queryset=User.objects.all(),
+    users = forms.MultipleChoiceField(
+        choices=[],
         widget=forms.CheckboxSelectMultiple,
-        label='Выберите участников'
+        label='Выберите участников',
+        required=False
+    )
+
+class CreateMessageForm(forms.Form):
+    text = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Введите сообщение...',
+            'rows': 3,
+            'class': 'form-control'
+        }),
+        max_length=1000,
+        required=True,
+        label='Сообщение'
     )

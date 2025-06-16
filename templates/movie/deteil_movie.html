@@ -139,6 +139,94 @@
             transform: translateY(-2px);
         }
 
+        /* Стилизованная кнопка оплаты */
+        .payment-button {
+            position: relative;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e3a8a);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .payment-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .payment-button:hover::before {
+            left: 100%;
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8, #1e40af);
+            text-decoration: none;
+            color: white;
+        }
+
+        .payment-button:active {
+            transform: translateY(0);
+            transition: transform 0.1s;
+        }
+
+        .crypto-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .magic-sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: 25px;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fbbf24;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+            opacity: 0;
+        }
+
+        .sparkle:nth-child(1) { top: 25%; left: 25%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 45%; left: 75%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { top: 75%; left: 35%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { top: 80%; left: 65%; animation-delay: 1.5s; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+
+        .now-payments-logo {
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
         .social-links {
             margin-top: 20px;
         }
@@ -335,6 +423,29 @@
 
         .close-btn:hover {
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .movie-info-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .movie-poster {
+                width: 150px;
+                height: 225px;
+            }
+
+            .action-buttons {
+                justify-content: center;
+            }
+
+            .payment-button {
+                font-size: 12px;
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -364,10 +475,12 @@
                         <a href="#" class="btn-primary-custom" style="background: rgba(255,255,255,0.2);">
                             <i class="bi bi-plus-circle"></i> Добавить в Понравившиеся
                         </a>
-                        <a href="https://nowpayments.io/payment/?iid=5393396025&source=button" target="_blank"
-                           rel="noreferrer noopener">
-                            <img src="https://nowpayments.io/images/embeds/payment-button-white.svg"
-                                 alt="Cryptocurrency & Bitcoin payment button by NOWPayments">
+                        <a href="https://nowpayments.io/payment/?iid=5393396025&source=button"
+                           target="_blank"
+                           rel="noreferrer noopener"
+                           class="btn-primary-custom">
+                            <i class="bi bi-currency-bitcoin"></i>
+                            <span>Оплатить криптой</span>
                         </a>
                     </div>
                     <div class="social-links">
@@ -561,7 +674,7 @@
         });
 
         // Анимация для кнопок
-        document.querySelectorAll('.btn-primary-custom, .btn-secondary-custom').forEach(btn => {
+        document.querySelectorAll('.btn-primary-custom, .btn-secondary-custom, .payment-button').forEach(btn => {
             btn.addEventListener('mouseenter', () => {
                 btn.style.transform = 'translateY(-2px)';
             });

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, ReviewForm, RatingForm, CreateChatForm
+from .forms import RegisterForm, ReviewForm, RatingForm, CreateChatForm, CreateMessageForm
 
 
 # Create your views here.
@@ -38,6 +38,7 @@ def login_view(request):
         return HttpResponse("Неверный логин или пароль", status=401)
     return render(request, 'user/login.html')
 
+
 @login_required
 def review_movie(request, movie_id):
     if request.method == 'POST':
@@ -68,6 +69,7 @@ def review_movie(request, movie_id):
 
     return render(request, 'mark/review_movie.html', {'form': form})
 
+
 @login_required
 def rating_movie(request, movie_id):
     if request.method == 'POST':
@@ -94,6 +96,7 @@ def rating_movie(request, movie_id):
         form = RatingForm()
 
     return render(request, 'mark/rating_movie.html', {'form': form})
+
 
 @login_required
 def review_serial(request, serial_id):
@@ -125,6 +128,7 @@ def review_serial(request, serial_id):
 
     return render(request, 'mark/review_serial.html', {'form': form})
 
+
 @login_required
 def rating_serial(request, serial_id):
     if request.method == 'POST':
@@ -152,23 +156,48 @@ def rating_serial(request, serial_id):
 
     return render(request, 'mark/rating_serial.html', {'form': form})
 
+
 def create_chat(request):
     if request.method == 'POST':
-        form = CreateChatForm(request.POST)
+        post_data = request.POST.copy()
+        if 'users' in post_data:
+            selected_usernames = [user for user in post_data.getlist('users') if user.strip()]
+        else:
+            selected_usernames = []
+        data = {
+            'participants': selected_usernames,
+            'creator': selected_usernames[0]
+        }
+        response = requests.post('http://127.0.0.1:8080/message/chat/', json=data)
+        if response.status_code == 201:
+            chat_data = response.json()
+            chat_id = chat_data.get('id')
+            return redirect('create_message', chat_id=chat_id)
+        else:
+            return HttpResponse(f"Ошибка API: {response.status_code} - {response.text}", status=500)
+    else:
+        all_users = requests.get('http://127.0.0.1:8080/registration/registrations/')
+        users = all_users.json()
+        return render(request, 'chat/create_chat.html', {
+            'users': users,
+        })
+
+def create_message(request, chat_id):
+    if request.method == 'POST':
+        form = CreateMessageForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            response = requests.post('http://127.0.0.1:8080/message/chat/', json=data)
+            data['chat'] = chat_id
+            data['sender'] = request.user.id
+            response = requests.post('http://127.0.0.1:8080/message/message/', json=data)
             if response.status_code == 201:
-                return HttpResponse("Успешно создано!")
+                return redirect('create_message', chat_id=chat_id)
             else:
                 return HttpResponse(f"Ошибка API: {response.status_code}", status=500)
     else:
-        form = CreateChatForm()
-        all_users = requests.get('http://127.0.0.1:8080/registration/registrations/')
-        users = all_users.json()
-        print(users)
+        form = CreateMessageForm()
 
-        return render(request, 'chat/create_chat.html', {
-            'form': form,
-            'users': users,
-        })
+    return render(request, 'chat/create_message.html', {
+        'form': form,
+        'chat_id': chat_id
+    })

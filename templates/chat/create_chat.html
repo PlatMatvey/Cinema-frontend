@@ -1,7 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'chat/create_chat.css' %}">
     <title>KinoHub. Создание чата</title>
     <style>
         * {
@@ -63,7 +65,6 @@
             background-color: #2c2c2c;
             border-radius: 12px;
             padding: 15px;
-
             max-height: 300px;
             overflow-y: auto;
         }
@@ -167,109 +168,146 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+
             letter-spacing: 1px;
         }
 
-        button:hover {
+        button:hover:not(:disabled) {
         }
 
-        button:active {
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .alert {
+            background: linear-gradient(135deg, #da3633, #f85149);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="form-container text-center">
-        <h3 class="mb-4">Создать Чат</h3>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="participants">Выберите участников:</label>
-                <div class="participants-container" id="participantsContainer">
-                    {% for user in form.participants.field.queryset %}
-                        <div class="user-option">
-                            <input type="checkbox"
-                                   name="participants"
-                                   value="{{ user.id }}"
-                                   id="user_{{ user.id }}"
-                                   {% if user in form.participants.value %}checked{% endif %}>
-                            <div class="user-info">
-                                <div class="user-avatar">{{ user.username|first|upper }}</div>
-                                <div class="user-details">
-                                    <div class="username">{{ user.username }}</div>
-                                    <div class="user-email">{{ user.email|default:"Без email" }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div style="text-align: center; color: #666; padding: 20px;">
-                            <p>Нет доступных пользователей</p>
-                        </div>
-                    {% endfor %}
-                </div>
-                <hr>
-            <button type="submit" id="createButton" disabled class="btn btn-primary w-100">
-                Создать чат
-            </button>
-        </form>
+<div class="form-container text-center">
+    <h2>Создать Чат!</h2>
+    
+    {% if form.errors %}
+    <div class="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Ошибка:</strong>
+        {% for field, errors in form.errors.items %}
+        {{ errors|join:", " }}
+        {% endfor %}
     </div>
+    {% endif %}
 
-    <script>
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const selectedCount = document.getElementById('selectedCount');
-        const createButton = document.getElementById('createButton');
-        const searchBox = document.getElementById('searchUsers');
-        const userOptions = document.querySelectorAll('.user-option');
+    <form method="POST" id="createChatForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="participants">Выберите участников:</label>
+            <div class="participants-container" id="participantsContainer">
+                {% for user in users %}
+                <div class="user-option">
+                    <input type="checkbox"
+                           name="users"
+                           value="{{ user.username }}"
+                           id="user_{{ user.username }}"
+                           {% if user in form.users.value %}checked{% endif %}>
+                    <div class="user-info">
+                        <div class="user-avatar">{{ user.username|first|upper }}</div>
+                        <div class="user-details">
+                            <div class="username">{{ user.username }}</div>
+                            <div class="user-email">{{ user.email|default:"Без email" }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    <p>Нет доступных пользователей</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="selected-count" id="selectedCount">Выберите участников</div>
+        </div>
 
-        // Обновление счетчика выбранных пользователей
-        function updateSelectedCount() {
-            const selected = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        <button type="submit" id="createButton" disabled class="btn btn-primary w-100">
+            <span id="buttonText">Создать чат</span>
+            <i id="loadingIcon" class="fas fa-spinner fa-spin" style="display: none;"></i>
+        </button>
+    </form>
+</div>
+
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const selectedCount = document.getElementById('selectedCount');
+    const createButton = document.getElementById('createButton');
+    const userOptions = document.querySelectorAll('.user-option');
+    const createForm = document.getElementById('createChatForm');
+    const buttonText = document.getElementById('buttonText');
+    const loadingIcon = document.getElementById('loadingIcon');
+
+    // Обновление счетчика выбранных пользователей
+    function updateSelectedCount() {
+        const selected = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+        if (selected === 0) {
+            selectedCount.textContent = 'Выберите участников';
+            selectedCount.style.color = '#999';
+            createButton.disabled = true;
+            createButton.style.opacity = '0.6';
+        } else {
             selectedCount.textContent = `Выбрано участников: ${selected}`;
+            selectedCount.style.color = '#4a90e2';
+            createButton.disabled = false;
+            createButton.style.opacity = '1';
+        }
+    }
 
-            if (selected > 0) {
-                createButton.disabled = false;
-                createButton.style.opacity = '1';
-            } else {
-                createButton.disabled = true;
-                createButton.style.opacity = '0.6';
+    // Обработчики событий для чекбоксов
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedCount);
+    });
+
+    // Клик по всему блоку пользователя
+    userOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox') {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                updateSelectedCount();
             }
+        });
+    });
+
+    // Обработка отправки формы
+    createForm.addEventListener('submit', function(e) {
+        const selected = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+        if (selected === 0) {
+            e.preventDefault();
+            alert('Выберите хотя бы одного участника для чата!');
+            return;
         }
 
-        // Поиск пользователей
-        searchBox.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
+        // Показываем индикатор загрузки
+        buttonText.style.display = 'none';
+        loadingIcon.style.display = 'inline-block';
+        createButton.disabled = true;
+        createButton.textContent = '';
+        createButton.appendChild(loadingIcon);
+        createButton.insertAdjacentText('beforeend', ' Создание чата...');
+    });
 
-            userOptions.forEach(option => {
-                const username = option.querySelector('.username').textContent.toLowerCase();
-                const email = option.querySelector('.user-email').textContent.toLowerCase();
-
-                if (username.includes(searchTerm) || email.includes(searchTerm)) {
-                    option.style.display = 'flex';
-                } else {
-                    option.style.display = 'none';
-                }
-            });
-        });
-
-        // Обработчики событий для чекбоксов
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelectedCount);
-        });
-
-        // Клик по всему блоку пользователя
-        userOptions.forEach(option => {
-            option.addEventListener('click', function(e) {
-                if (e.target.type !== 'checkbox') {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    updateSelectedCount();
-                }
-            });
-        });
-
-        // Инициализация
-        updateSelectedCount();
-    </script>
+    // Инициализация
+    updateSelectedCount();
+</script>
 </body>
 </html>
