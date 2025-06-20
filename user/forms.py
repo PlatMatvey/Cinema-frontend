@@ -1,6 +1,6 @@
 from django import forms
+from django.utils import timezone
 from django.contrib.auth.models import User
-
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -38,4 +38,9 @@ class CreateMessageForm(forms.Form):
         max_length=1000,
         required=True,
         label='Сообщение'
+    )
+    created_at = forms.DateTimeField(
+        widget=forms.HiddenInput(),
+        initial=timezone.now,
+        required=False
     )

@@ -37,36 +37,28 @@ def login_view(request):
         return HttpResponse("Неверный логин или пароль", status=401)
     return render(request, 'user/login.html')
 
-
 def review_movie(request, movie_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-
             data['movie'] = movie_id
-            data['user'] = [request.user.id]
+
             access_token = request.session.get('access_token')
+            headers = {'Authorization': f'Bearer {access_token}'}
 
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-Type': 'application/json'
-            }
-
-            response = requests.post('http://127.0.0.1:8080/mark/review_movie/', json=data, headers=headers)
-
-            print("Response status:", response.status_code)
-            print("Response text:", response.text)
-
+            response = requests.post(
+                'http://127.0.0.1:8080/mark/review_movie/',
+                json=data,
+                headers=headers
+            )
             if response.status_code == 201:
                 return HttpResponse("Комментарий успешно отправлен!")
             else:
                 return HttpResponse("Ошибка при отправке комментария", status=500)
     else:
         form = ReviewForm()
-
     return render(request, 'mark/review_movie.html', {'form': form})
-
 
 def rating_movie(request, movie_id):
     if request.method == 'POST':
@@ -74,13 +66,15 @@ def rating_movie(request, movie_id):
         if form.is_valid():
             data = form.cleaned_data
             data['movie'] = movie_id
-            access_token = request.session.get('access_token')
 
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-Type': 'application/json'
-            }
-            response = requests.post('http://127.0.0.1:8080/mark/rating_movie/', json=data, headers=headers)
+            access_token = request.session.get('access_token')
+            headers = {'Authorization': f'Bearer {access_token}'}
+
+            response = requests.post(
+                'http://127.0.0.1:8080/mark/rating_movie/',
+                json=data,
+                headers=headers
+            )
 
             print("Response status:", response.status_code)
             print("Response text:", response.text)
@@ -100,17 +94,16 @@ def review_serial(request, serial_id):
         form = ReviewForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-
             data['serial'] = serial_id
-            data['user'] = [request.user.id]
+
             access_token = request.session.get('access_token')
+            headers = {'Authorization': f'Bearer {access_token}'}
 
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-Type': 'application/json'
-            }
-
-            response = requests.post('http://127.0.0.1:8080/mark/review_serial/', json=data, headers=headers)
+            response = requests.post(
+                'http://127.0.0.1:8080/mark/review_movie/',
+                json=data,
+                headers=headers
+            )
 
             print("Response status:", response.status_code)
             print("Response text:", response.text)
@@ -121,7 +114,6 @@ def review_serial(request, serial_id):
                 return HttpResponse("Ошибка при отправке комментария", status=500)
     else:
         form = ReviewForm()
-
     return render(request, 'mark/review_serial.html', {'form': form})
 
 
@@ -131,13 +123,16 @@ def rating_serial(request, serial_id):
         if form.is_valid():
             data = form.cleaned_data
             data['serial'] = serial_id
-            access_token = request.session.get('access_token')
+            print(data)
 
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-Type': 'application/json'
-            }
-            response = requests.post('http://127.0.0.1:8080/mark/rating_serial/', json=data, headers=headers)
+            access_token = request.session.get('access_token')
+            headers = {'Authorization': f'Bearer {access_token}'}
+
+            response = requests.post(
+                'http://127.0.0.1:8080/mark/rating_serial/',
+                json=data,
+                headers=headers
+            )
 
             print("Response status:", response.status_code)
             print("Response text:", response.text)
@@ -176,8 +171,6 @@ def create_chat(request):
         return render(request, 'chat/create_chat.html', {
             'users': users,
         })
-
-
 
 def create_message(request, chat_id):
     if request.method == 'POST':

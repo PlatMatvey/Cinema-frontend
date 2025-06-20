@@ -1,8 +1,7 @@
+{% extends  'movie/base.html' %}
 {% load static %}
-{% include 'movie/header.html' %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+
+{% block extra_css %}
   <meta charset="UTF-8">
   <title>KinoHub - Все сериалы</title>
   <link rel="stylesheet" href="{% static 'movie/all_movie.css' %}">
@@ -110,9 +109,10 @@
       margin: 4px 0 0;
       font-size: 12px;
     }
-  </style>
-</head>
-<body>
+</style>
+{% endblock %}
+
+{% block content %}
   <div class="main-container">
     <div class="row">
       <!-- Слева фильтр -->
@@ -182,7 +182,4 @@
       </div>
     </main>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
-</html>
+{% endblock %}
